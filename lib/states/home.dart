@@ -76,121 +76,155 @@ class MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: FutureBuilder<Response<List<Product>>>(
-        future: futureProducts,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
-          } else if (!snapshot.hasData || !snapshot.data!.success) {
-            return Center(
-              child: Text(snapshot.data?.message ?? "Data not available"),
-            );
-          }
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/currency-exchange");
+                  },
+                  child: Text('Go to Currency Exchange'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/weather");
+                  },
+                  child: Text('Go to Weather'),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<Response<List<Product>>>(
+              future: futureProducts,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                } else if (!snapshot.hasData || !snapshot.data!.success) {
+                  return Center(
+                    child: Text(snapshot.data?.message ?? "Data not available"),
+                  );
+                }
 
-          // Display list of posts
-          List<Product> products = snapshot.data?.data ?? [];
-          return ListView.builder(
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the container
-                      borderRadius: BorderRadius.circular(
-                        5,
-                      ), // Optional: Rounded corners
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withAlpha(50), // Shadow color
-                          spreadRadius: 2, // Spread radius
-                          blurRadius: 5, // Blur radius
-                          offset: Offset(0, 3), // Shadow position (x, y)
-                        ),
-                      ],
-                    ),
-                    margin: EdgeInsets.symmetric(
-                      vertical: 8,
-                      horizontal: 16,
-                    ), // Optional: Add margin
-                    child: Row(
+                // Display list of posts
+                List<Product> products = snapshot.data?.data ?? [];
+                return ListView.builder(
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    return Column(
                       children: [
-                        SizedBox(
-                          width: 200.0,
-                          height: 100.0,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              // Remove border radius
-                              borderRadius:
-                                  BorderRadius.zero, // Set borderRadius to zero
-                            ),
+                        Container(
+                          decoration: BoxDecoration(
                             color:
-                                getRandomColor(), // Assign a random color to each card
-                            child: Center(
-                              child: Text(
-                                products[index].name,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                ),
+                                Colors
+                                    .white, // Background color of the container
+                            borderRadius: BorderRadius.circular(
+                              5,
+                            ), // Optional: Rounded corners
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withAlpha(
+                                  50,
+                                ), // Shadow color
+                                spreadRadius: 2, // Spread radius
+                                blurRadius: 5, // Blur radius
+                                offset: Offset(0, 3), // Shadow position (x, y)
                               ),
-                            ),
+                            ],
                           ),
-                        ),
-                        Expanded(
-                          // Use Expanded to constrain the ListTile's width
-                          child: ListTile(
-                            title: Center(
-                              child: Text(
-                                products[index].name,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                          margin: EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 16,
+                          ), // Optional: Add margin
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 200.0,
+                                height: 100.0,
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    // Remove border radius
+                                    borderRadius:
+                                        BorderRadius
+                                            .zero, // Set borderRadius to zero
+                                  ),
+                                  color:
+                                      getRandomColor(), // Assign a random color to each card
+                                  child: Center(
+                                    child: Text(
+                                      products[index].name,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 28,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                            subtitle: Column(
-                              children: [
-                                Text(
-                                  products[index].description,
-                                  textAlign: TextAlign.center,
+                              Expanded(
+                                // Use Expanded to constrain the ListTile's width
+                                child: ListTile(
+                                  title: Center(
+                                    child: Text(
+                                      products[index].name,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  subtitle: Column(
+                                    children: [
+                                      Text(
+                                        products[index].description,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Text("Price: ${products[index].price}"),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        spacing: 20,
+                                        children: [
+                                          Icon(
+                                            Icons.star_border,
+                                            color: Colors.red,
+                                            size: 24.0,
+                                            semanticLabel: 'Rating',
+                                          ),
+                                          Icon(
+                                            Icons.star_border,
+                                            color: Colors.red,
+                                            size: 24.0,
+                                            semanticLabel: 'Rating',
+                                          ),
+                                          Icon(
+                                            Icons.star_border,
+                                            color: Colors.red,
+                                            size: 24.0,
+                                            semanticLabel: 'Rating',
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Text("Price: ${products[index].price}"),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  spacing: 20,
-                                  children: [
-                                    Icon(
-                                      Icons.star_border,
-                                      color: Colors.red,
-                                      size: 24.0,
-                                      semanticLabel: 'Rating',
-                                    ),
-                                    Icon(
-                                      Icons.star_border,
-                                      color: Colors.red,
-                                      size: 24.0,
-                                      semanticLabel: 'Rating',
-                                    ),
-                                    Icon(
-                                      Icons.star_border,
-                                      color: Colors.red,
-                                      size: 24.0,
-                                      semanticLabel: 'Rating',
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                ],
-              );
-            },
-          );
-        },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

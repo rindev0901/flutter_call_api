@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_call_api/pages/home.dart';
 import 'package:flutter_call_api/pages/weather.dart';
+import 'package:flutter_call_api/states/currency-exchange.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         "/": (context) => const MyHomePage(title: 'Flutter Products Page'),
         "/weather":
             (context) => const MyWeatherPage(title: 'Flutter Weather Page'),
+        "/currency-exchange": (context) => CurrencyExchangeRatePage(),
       },
     );
   }
